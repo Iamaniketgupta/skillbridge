@@ -73,13 +73,15 @@ const signup = asyncHandler(async(req,res ,next)=>{
     if(!createdUser){
         throw new ApiError(500 , "something went wrong while registering");
     } 
+    const {accessToken , refreshToken} = await generateAccessAndRefreshToken(user._id);
     
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            createdUser,
-            "Mentee registered successfully"
-        )
+    return res.status(200).json({       
+    
+           user: createdUser,
+           token : accessToken,
+           refreshToken :  refreshToken,
+           message: "Mentee registered successfully"
+        }
     )
 
 })

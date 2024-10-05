@@ -7,6 +7,8 @@ import { login } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../constant';
 import axiosInstance from '../axiosConfig/axiosConfig';
+import { setCookie } from './constants';
+
 export default function Login_Mentee() {
     const [cred, setCred] = useState({ email: "", password: "" });
     const onChange = (e) => {
@@ -21,18 +23,11 @@ export default function Login_Mentee() {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axiosInstance.post(`/api/v1/mentee/login`, cred);
-            
+            const response = await axiosInstance.post(`/mentee/login`, cred);
             console.log("Login Mentee: ",response);
             if(response.data){
-                function setCookie(name, value) {
-                    document.cookie = name + "=" + value + "; path=/";
-                }
-                setCookie("accessToken", response.data.data.accessToken);
-                localStorage.setItem("accessToken" , response.data.data.accessToken)
-    
-                // console.log(response.data.data);
-    
+              
+                setCookie('accessToken', response.data.data.accessToken);
     
                 const obj = {
                     user:response.data.data.user

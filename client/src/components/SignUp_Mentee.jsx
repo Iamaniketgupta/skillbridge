@@ -6,8 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import {useNavigate} from 'react-router-dom'
 
+
 import { SERVER_URL } from '../../constant';
 import axiosInstance from "../axiosConfig/axiosConfig";
+import { setCookie } from "./constants";
 
 export default function SignUp_Mentee() {
 
@@ -62,11 +64,12 @@ export default function SignUp_Mentee() {
       setLoading(true);
       
 
-      const response = await axiosInstance.post("/api/v1/mentee/signup", {...formData ,}  )
+      const response = await axiosInstance.post("/mentee/signup", {...formData ,}  )
       if(response.data){
+        setCookie('accessToken', response.data.token);
         toast.success("Sign up successful!");
         setLoading(false);
-        navigate("/login_mentee")
+        navigate("/login_mentee");
       }
 
     } catch (error) {
