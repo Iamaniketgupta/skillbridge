@@ -11,30 +11,37 @@ import { Pricing } from "../models/pricing.model.js";
 
 const getCheckoutSession = asyncHandler(async (req, res) => {
     const { mentorId } = req.params;
-    const { _id, email } = req.body;
-// console.log(mentorId);
+    console.log(mentorId)
+    // console.log("ceada",req)
+    const { _id, email } = req.user;
 
+    // Check if mentorId is provided
     if (!mentorId)
         throw new ApiError(400, "Mentor ID not found");
 
+    // Fetch mentor details
     const mentor = await Mentor.findById(mentorId).select("-password -refreshToken");
-    const pricing = await Pricing.findOne({mentor:mentorId});
-
     if (!mentor)
         throw new ApiError(400, "Mentor not found");
 
+    // Fetch mentor pricing details
+    const pricing = await Pricing.findOne({ mentor: mentorId });
+    if (!pricing || !pricing.mentorshipPrice)
+        throw new ApiError(400, "Pricing not found or invalid");
+
+    // Fetch mentee details
     const mentee = await Mentee.findById(_id).select("-password -refreshToken");
     if (!mentee)
         throw new ApiError(402, "Please Login first");
 
-        const stripe =new Stripe(process.env.STRIPE_SECRET);
+    const stripe = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2022-11-15' });
 
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
-        success_url: `https://thementorhub.vercel.app/checkout-success`,
-        cancel_url: `https://thementorhub.vercel.app/checkout-failed/${mentorId}`,
-        customer_email: email,
+        success_url: `${process.env.CLIENT_URL}/checkout-success`,
+        cancel_url: `${process.env.CLIENT_URL}/checkout-failed/${mentorId}`,
+        customer_email: email, 
         client_reference_id: mentorId,
         line_items: [{
             price_data: {
@@ -42,27 +49,31 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
                 unit_amount: pricing.mentorshipPrice * 100, 
                 product_data: {
                     name: mentor.fullName,
-                    images: [mentor.avatar], 
+                    images: [mentor.avatar || 'default-image-url.jpg'],
                 }
             },
             quantity: 1
         }]
     });
 
-
+    if(!session){
+        return res.status(500).json({message:'Something went wrong'})
+    }
+    // Save the subscription details only after payment is successful
     const subscription = new Subscription({
         mentor: mentorId,
         mentee: _id,
         price: pricing.mentorshipPrice,
         session: session.id,
-        status:"paid"
+        status: "pending" 
     });
 
     await subscription.save();
 
+    // Return the session information to the client
     res.status(201).json({
         success: true,
-        message: 'Successfully paid',
+        message: 'Successfully initiated checkout',
         session: session
     });
 });
@@ -71,7 +82,7 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
 
 
 const getUserSubscribers = asyncHandler(async(req,res)=>{
-    const {mentorId} = req.body;
+    const mentorId = req.mentor._id;
     // console.log(mentorId);
     if(!mentorId){
         throw new ApiError(400 , "Mentor id is required");

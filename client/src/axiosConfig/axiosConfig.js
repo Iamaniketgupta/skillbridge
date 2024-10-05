@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 const accessToken = cookies.get('accessToken');
 if(!accessToken)
-  window.location.href = '/login'
+  window.location.href = '/'
  const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
 });

@@ -23,7 +23,7 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
 
         console.log("MENTOR",user2)
         console.log("MENTEE",user)
-
+console.log(user)
         if (user)
             req.user = user;
         if (user2)

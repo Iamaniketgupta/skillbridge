@@ -18,7 +18,14 @@ const subscriptionSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-      
+      session: {
+          type: String,
+          required: true
+      },
+      status: {
+          type: String,
+          
+      }
 
     },
     { timestamps: true }

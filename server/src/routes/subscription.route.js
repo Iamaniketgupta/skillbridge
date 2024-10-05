@@ -6,7 +6,7 @@ import {  getMenteeSubscriptions, getUserSubscribers } from "../controllers/subs
 const router = Router();
 
 
-router.route('/getUserSubscribers').post( getUserSubscribers);
+router.route('/getUserSubscribers').post(verifyJwt, getUserSubscribers);
 router.route('/getMenteeSubscriptions').get(verifyJwt , getMenteeSubscriptions);
 
 export default router;
