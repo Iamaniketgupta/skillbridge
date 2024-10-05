@@ -50,13 +50,12 @@ const verifyMenteeId = asyncHandler(async (req, res, next) => {
 });
 
 const verifyMentorId = asyncHandler(async (req, res, next) => {
-  const token =
-    req.cookies.menauthId || req.header("Authorization")?.replace("Bearer", "");
+  const token = req.header("Authorization")?.replace("Bearer", "");
 
   if (!token) {
     res.status(402).json({
       data: null,
-      message: "Please Login as Mentee",
+      message: "Please Login as Mentor",
     });
   }
 
@@ -67,14 +66,14 @@ const verifyMentorId = asyncHandler(async (req, res, next) => {
   let user = await Mentor.findById(decodedToken).select(
     "-password -refreshToken"
   );
-  if (!user) {
-    throw new ApiError(400, "Expired session")
+  
+  if(!user){
+    return res.status(401).json({message:'Token Invalid'})
   }
 
-  req.user = user;
-  return res
-    .status(200)
-    .json(new ApiResponse(200, user, "User got successfully"));
+
+  res.status(200).json(user)
+
 });
 
 
@@ -100,7 +99,7 @@ export const verifyPersonById = asyncHandler(async( req , res, next)=>{
       console.log(user)
   
       if(!user){
-        res.status(401).json({message:'Token Invalid'})
+        return res.status(401).json({message:'Token Invalid'})
       }
   
      res.status(200).json(user)

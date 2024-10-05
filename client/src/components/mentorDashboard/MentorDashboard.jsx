@@ -7,6 +7,7 @@ import axios from "axios";
 import { SERVER_URL } from "../../../constant";
 import { token } from "../constants";
 import axiosInstance from "../../axiosConfig/axiosConfig";
+import Cookies from "universal-cookie";
 
 const MentorDashboard = () => {
     const [topMenuToggle, setTopMenuToggle] = useState(false);
@@ -23,13 +24,11 @@ const MentorDashboard = () => {
     
     async function signoutuser() {
         try {
-            await axiosInstance.get("/api/v1/mentor/logout",);
+            await axiosInstance.get("/mentor/logout",);
             navigate('/');
             toast.success("SignOut Success");
-            function deleteCookie(cookieName) {
-              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            }
-            deleteCookie();
+            
+            Cookies.remove('accessToken');
 
         } catch (error) {
             toast.error("Failed to Signout");

@@ -27,7 +27,7 @@ const MenteeMeetings = () => {
         try {
             setLoading(true);
 
-            const res = await axiosInstance.get("/api/v1/meeting/allMenteeMeetings",);
+            const res = await axiosInstance.get("/meeting/allMenteeMeetings",);
             // console.log(res.data);
             setMeetings(res.data);
             setLoading(false);

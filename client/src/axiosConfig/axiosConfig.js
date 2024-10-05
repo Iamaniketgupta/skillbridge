@@ -3,6 +3,8 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 const accessToken = cookies.get('accessToken');
+if(!accessToken)
+  window.location.href = '/login'
  const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/',
 });

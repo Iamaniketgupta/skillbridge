@@ -42,7 +42,7 @@ const EditProfile = () => {
             description
         }
         try {
-            const response = await axiosInstance.post("/api/v1/mentor/editProfile", {...data,},);
+            const response = await axiosInstance.post("/mentor/editProfile", {...data,},);
             // console.log(response.data)
             const obj = {
                 user: response.data.data
@@ -77,7 +77,7 @@ const EditProfile = () => {
             formData.append('avatar', file);
 
 
-            const response = await axiosInstance.post("/api/v1/mentor/updateMentorAvatar", { avatar: file ,},);
+            const response = await axiosInstance.post("/mentor/updateMentorAvatar", { avatar: file ,},);
 
             const obj = {
                 user: response.data.data

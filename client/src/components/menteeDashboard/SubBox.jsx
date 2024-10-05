@@ -11,7 +11,7 @@ export default function SubBox(props) {
 
   async function getSubs() {
     try {
-      const endpoint =  '/api/v1/subscription/getMenteeSubscriptions';
+      const endpoint =  '/subscription/getMenteeSubscriptions';
       const response = await axiosInstance.get(endpoint,);
       if (props?.type === "top") {
         setSubs(response.data.data.slice(0, 3));

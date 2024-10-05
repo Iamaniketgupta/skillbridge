@@ -20,7 +20,7 @@ const AssignTask = () => {
   const getMentees = async () => {
     try {
       setLoading(true)
-      const response = await axiosInstance.post("/api/v1/subscription/getUserSubscribers", {
+      const response = await axiosInstance.post("/subscription/getUserSubscribers", {
         mentorId: user._id,
       },);
       if (response.data.data) {
@@ -49,7 +49,7 @@ const AssignTask = () => {
         return;
       }
 
-      await axiosInstance.post("/api/v1/task/assign-task", {
+      await axiosInstance.post("/task/assign-task", {
         title,
         description,
         githubLink,

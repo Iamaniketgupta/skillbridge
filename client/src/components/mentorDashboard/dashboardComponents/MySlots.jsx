@@ -19,7 +19,7 @@ const MySlots = () => {
     async function getAllSlots() {
         try {
             setSlotLoader(true);
-            const response = await axiosInstance.get('/api/v1/mentor/getAllSlots',);
+            const response = await axiosInstance.get('/mentor/getAllSlots',);
             setSlotsData(response.data?.data);
             setSlotLoader(false);
 
@@ -39,7 +39,7 @@ const MySlots = () => {
             if (!confirm("Are you sure ?"))
                 return;
 
-            const response = await axiosInstance.delete(`/api/v1/timeslot/deleteSlots/${slotId}`,);
+            const response = await axiosInstance.delete(`/timeslot/deleteSlots/${slotId}`,);
             if (response)
                 toast.success("Slot Deleted")
             getAllSlots();
@@ -117,7 +117,7 @@ const MySlots = () => {
                 setLoading(false);
                 return;
             }
-            const response = await axiosInstance.post('/api/v1/timeslot/addTimeslot', { date, month, monthName, time, },);
+            const response = await axiosInstance.post('/timeslot/addTimeslot', { date, month, monthName, time, },);
             // console.log(response.data);
             toast.success("Slot Added");
             getAllSlots();
