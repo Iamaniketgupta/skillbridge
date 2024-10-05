@@ -19,7 +19,7 @@ const AllMentorsPage = () => {
 
         try {
             setLoading(true);
-            const response = await axiosInstance.get('/api/v1/allMentors',);
+            const response = await axiosInstance.get('/allMentors',);
             // console.log(response.data);
             setAllMentors(response.data?.data);
             setLoading(false);

@@ -99,7 +99,7 @@ const Meetings = () => {
                 setLoading(false);
                 return;
             }
-            const response = await axiosInstance.post('/api/v1/meeting/create/new', { date, month, monthName, time, roomId, menteeId, },);
+            const response = await axiosInstance.post('/meeting/create/new', { date, month, monthName, time, roomId, menteeId, },);
             // console.log(response.data);
             toast.success("Meeting Added");
             setData({ date: '', time: '', roomId: '' });
@@ -124,7 +124,7 @@ const Meetings = () => {
             return;
         try {
 
-            const res = await axiosInstance.delete(`/api/v1/meeting/${menteeId}`,);
+            const res = await axiosInstance.delete(`/meeting/${menteeId}`,);
             if (res) {
                 toast.success("Delete Success");
             }
@@ -136,7 +136,7 @@ const Meetings = () => {
 
     async function fetchMeetings() {
         try {
-            const res = await axiosInstance.get("/api/v1/meeting/allMentorMeetings",);
+            const res = await axiosInstance.get("/meeting/allMentorMeetings",);
             console.log(res.data);
             setMeetings(res.data.meetings);
 
@@ -150,7 +150,7 @@ const Meetings = () => {
     async function fetchMentees() {
         setLoading(true)
         try {
-            const response = await axiosInstance.post("/api/v1/subscription/getUserSubscribers", {
+            const response = await axiosInstance.post("/subscription/getUserSubscribers", {
                 mentorId: user._id
                 ,
             },);

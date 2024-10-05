@@ -18,20 +18,15 @@ const MentorProfile = () => {
     const [slotloader, setSlotLoader] = useState(false);
     const user = useSelector((state)=>state.auth.user);
 
-
-    // const [userDetails,setUserDetails]= useState({});
-
-
     async function getAllSlots() {
         try {
             setSlotLoader(true);
             const mentorId = state._id;
-            // console.log(mentorId)
-            const response = await axiosInstance.get('/api/v1/timeslot/getAllSlots', {
+            const response = await axiosInstance.get('/timeslot/getAllSlots', {
                 params: {
                     mentorId: mentorId
                 }
-            },);
+            },);    
             // console.log(response)
 
             setSlotsData(response.data.data);
@@ -47,7 +42,7 @@ const MentorProfile = () => {
 
     async function fetchPricing() {
         try {
-            const response = await axiosInstance.get(`/api/v1/mentor/pricing/${state._id}`,);
+            const response = await axiosInstance.get(`/mentor/pricing/${state._id}`,);
             // console.log("hello ");
             setMyPrice(response.data.pricing);
             // console.log(pricingData);
@@ -68,7 +63,7 @@ const MentorProfile = () => {
             
             if(!selectedSlot)
             toast.error("Please Select a slot");
-        const res = await axiosInstance.post("/api/v1/timeslot/bookSlot",{selectedSlot,},);
+        const res = await axiosInstance.post("/timeslot/bookSlot",{selectedSlot,},);
         if(res.status === 200) {
             toast.success("Booked Success");
         }
@@ -91,7 +86,7 @@ const MentorProfile = () => {
         const stripe = await stripePromise;
         
         // Make a request to your backend to create a checkout session
-        const res = await axiosInstance.post(`/api/v1/payment/checkout-session/${state._id}`, {
+        const res = await axiosInstance.post(`/payment/checkout-session/${state._id}`, {
             
             _id:user._id,
             mentorId:state._id,

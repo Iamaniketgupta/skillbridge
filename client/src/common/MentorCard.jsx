@@ -22,7 +22,7 @@ function MentorCard(props) {
 
   const handleBookMark = async () => {
     try {
-       await axiosInstance.put("/api/v1/mentee/addMentorToBookmark", { mentorId });
+       await axiosInstance.put("/mentee/addMentorToBookmark", { mentorId });
        
       toast.success(`Like Added Success`);
       setLiked(true);
@@ -37,7 +37,7 @@ function MentorCard(props) {
       if (!mentorId)
         throw new Error("Something went wrong!");
 
-      const response = await axiosInstance.delete("/api/v1/mentee/removeMentorFromBookmark", { data: { mentorId } });
+      const response = await axiosInstance.delete("/mentee/removeMentorFromBookmark", { data: { mentorId } });
 
       if (!response)
         throw new Error("Failed to Remove !");

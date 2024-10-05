@@ -16,7 +16,7 @@ const Pricing = () => {
 
     async function fetchPricing() {
         try {
-            const response = await axiosInstance.get(`/api/v1/mentor/pricing/${mentorId}`,);
+            const response = await axiosInstance.get(`/mentor/pricing/${mentorId}`,);
             const pricingData = response.data.pricing;
 
             
@@ -35,7 +35,7 @@ const Pricing = () => {
 
     async function handleDeletePrice() {
         try {
-             await axiosInstance.delete('/api/v1/mentor/pricing/' + myprice._id ,);
+             await axiosInstance.delete('/mentor/pricing/' + myprice._id ,);
             // console.log('Pricing deleted successfully');
             fetchPricing();
             toast.success("Price Deleted Successfully");
@@ -96,7 +96,7 @@ const Pricing = () => {
 
     const handleCreate = async () => {
         try {
-            const response = await axiosInstance.post('/api/v1/mentor/pricing/new', {...pricingData ,},);
+            const response = await axiosInstance.post('/mentor/pricing/new', pricingData);
             console.log('Pricing created:', response.data.pricing);
             setPricingData({
                 mentorshipPrice: 0,

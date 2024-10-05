@@ -40,7 +40,7 @@ const navigate =  useNavigate()
             interests
         }
         try {
-            const response = await axiosInstance.post("/api/v1/mentee/updateMenteeProfile", {...data ,},);
+            const response = await axiosInstance.post("/mentee/updateMenteeProfile", {...data ,},);
 
             //   console.log(response.data.data)
               const obj = {
@@ -69,7 +69,7 @@ const navigate =  useNavigate()
           formData.append('avatar', file);
         //   console.log(formData)
       
-          const response = await axiosInstance.post("/api/v1/mentee/updateMenteeAvatar", formData,);
+          const response = await axiosInstance.post("/mentee/updateMenteeAvatar", formData,);
 
         //   console.log(response.data.data);
           const obj = {

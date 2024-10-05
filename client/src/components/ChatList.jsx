@@ -33,7 +33,7 @@ const ChatList = (
     try {
       // console.log("first")
       // console.log(selectedUser)
-      const response = await axiosInstance.post("/api/v1/mentor/getMentorById" , {
+      const response = await axiosInstance.post("/mentor/getMentorById" , {
         mentorId:selectedUser
       },);
       // console.log(response.data.data);
@@ -67,7 +67,7 @@ const ChatList = (
 
   async function fetchMentorList(){
     try {
-      const response = await axiosInstance.get("/api/v1/subscription/getMenteeSubscriptions",);
+      const response = await axiosInstance.get("/subscription/getMenteeSubscriptions",);
       // console.log(response.data);
       setmentors(response.data.data)
     } catch (error) {
@@ -79,7 +79,7 @@ const ChatList = (
   async function getUsersWithHistory() {
     // setLoading(true);
     try {
-      const response = await axiosInstance.post("/api/v1/message/getUsersWithChatHistory",
+      const response = await axiosInstance.post("/message/getUsersWithChatHistory",
         {
           id: user._id
         },

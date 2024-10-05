@@ -51,7 +51,7 @@ export default function Signup_Mentor() {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axiosInstance.post('/api/v1/mentor/signup', formData);
+            const response = await axiosInstance.post('/mentor/signup', formData);
             // console.log(response.data);
             toast.success('Sign up successful!');
             setLoading(false);

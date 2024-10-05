@@ -18,7 +18,7 @@ const MyMentees = () => {
     async function fetchMentees() {
         setLoading(true)
         try {
-            const response = await axiosInstance.post("/api/v1/subscription/getUserSubscribers", {
+            const response = await axiosInstance.post("/subscription/getUserSubscribers", {
                 mentorId: user._id,
             },);
             console.log(response.data.data)

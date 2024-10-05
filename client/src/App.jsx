@@ -52,9 +52,24 @@ function App() {
   const [loading, setLoading] = useState(true); // State for loading indicator
   
 
+
   const refresh = async()=>{
     try {
       const response = await axiosInstance.post("/refresh");
+      console.log(response.data,"FROM APP.JSX")
+      const obj = {
+        user:response.data
+      }
+      dispatch(login(obj))
+    } catch (error) {
+      console.log(error)
+    }finally{
+      setLoading(false);
+    }
+  }
+  const refreshMentor = async()=>{
+    try {
+      const response = await axiosInstance.post("/refreshMentor");
       console.log(response.data,"FROM APP.JSX")
       const obj = {
         user:response.data

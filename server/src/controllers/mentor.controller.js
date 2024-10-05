@@ -72,6 +72,7 @@ const loginMentor = asyncHandler(async (req, res) => {
     }
 
     const accessToken = await ValidUser.generateAccessToken();
+    console.log(accessToken)
     // Update user document with refresh token
     const refreshToken = await ValidUser.generateRefreshToken();
     const rtoken = await Mentor.findByIdAndUpdate(ValidUser._id, { refreshToken: refreshToken });
@@ -302,13 +303,14 @@ const getPricing = asyncHandler(async (req, res) => {
     const mentorId = req.params.mentorId;
 
     const mentor = await Mentor.findById(mentorId).populate('pricing');
-
     if (!mentor || !mentor.pricing) {
         return res.status(404).json({ message: 'No pricing found for this mentor' });
     }
 
     res.status(200).json({ pricing: mentor.pricing });
 });
+
+
 
 // Delete pricing
 const deletePricing = asyncHandler(async (req, res) => {

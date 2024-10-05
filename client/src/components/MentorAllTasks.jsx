@@ -19,7 +19,7 @@ const MentorAllTasks = () => {
   const handleConfirm = async() => {
   
       try {
-        const response = await axiosInstance.post("/api/v1/task/deleteTask" , {taskId,} ,
+        const response = await axiosInstance.post("/task/deleteTask" , {taskId,} ,
        
 )
         // console.log(response.data);
@@ -45,7 +45,7 @@ const MentorAllTasks = () => {
     // Fetch tasks assigned by the mentor to mentees
     const fetchTasks = async () => {
       try {
-        const response = await axiosInstance.post('/api/v1/task/getAllTasks' ,);
+        const response = await axiosInstance.post('/task/getAllTasks' ,);
         // console.log(response.data)
         setTasks(response.data.data);
       } catch (error) {

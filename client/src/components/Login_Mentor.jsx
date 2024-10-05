@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 
 import { SERVER_URL } from '../../constant';
 import axiosInstance from '../axiosConfig/axiosConfig';
+import { setCookie } from './constants';
 
 
 export default function Login_Mentor() {
@@ -27,15 +28,10 @@ export default function Login_Mentor() {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axiosInstance.post('/api/v1/mentor/login', cred);
+            const response = await axiosInstance.post('/mentor/login', cred);
             console.log("Login Mentor: ",response);
-            function setCookie(name, value) {
-                document.cookie = name + "=" + value + "; path=/";
-            }
+            
             setCookie("accessToken", response.data.data.accessToken);
-            localStorage.setItem("accessToken" , response.data.data.accessToken)
-
-
             const obj = {
                 user: response.data.data.user
             }

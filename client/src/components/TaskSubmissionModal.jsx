@@ -33,7 +33,7 @@ const TaskSubmissionModal = ({
       return;
     }
     try {
-      const response = await axiosInstance.post("/api/v1/task//submit-task", {
+      const response = await axiosInstance.post("/task/submit-task", {
         githubLink: githubLink,
         submitTaskId: taskId,
       },);

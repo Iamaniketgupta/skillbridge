@@ -18,7 +18,7 @@ const MenteeAllTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axiosInstance.post("/api/v1/task/getAllMenteeTasks" ,);
+        const response = await axiosInstance.post("/task/getAllMenteeTasks" ,);
         // console.log(response.data.data);
         setTasks(response.data.data);
       } catch (error) {

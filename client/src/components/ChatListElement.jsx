@@ -39,7 +39,7 @@ const ChatListElement = (
 
   const deleteChat = async()=>{
     try {
-      const response = await axiosInstance.post("/api/v1/message/deleteMessagesByUserId" , {
+      const response = await axiosInstance.post("/message/deleteMessagesByUserId" , {
         userId:user._id,
         personId:id
       },);

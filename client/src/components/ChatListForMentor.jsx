@@ -29,7 +29,7 @@ const ChatListForMentor = (
   const refresh = async()=>{
     try {
       // console.log("first")
-      const response = await axiosInstance.post("/api/v1/mentee/getMenteeById" , {
+      const response = await axiosInstance.post("/mentee/getMenteeById" , {
         menteeId:selectedUser
       },);
       
@@ -70,7 +70,7 @@ const ChatListForMentor = (
   async function getUsersWithHistory() {
     setLoading(true);
     try {
-      const response = await axiosInstance.post("/api/v1/message/getUsersWithChatHistory",
+      const response = await axiosInstance.post("/message/getUsersWithChatHistory",
         {
           id: user._id,
         },
@@ -90,7 +90,7 @@ const ChatListForMentor = (
   async function fetchMentees() {
     setLoading(true);
     try {
-      const response = await axiosInstance.post("/api/v1/subscription/getUserSubscribers",
+      const response = await axiosInstance.post("/subscription/getUserSubscribers",
         {
           mentorId: user._id,
         },

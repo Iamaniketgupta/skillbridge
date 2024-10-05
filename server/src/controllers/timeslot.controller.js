@@ -76,14 +76,10 @@ const deleteTimeslot = asyncHandler(async (req, res) => {
 
 const getAllSlots = asyncHandler(async (req, res) => {
     const mentorId = req.query.mentorId;
-    // console.log("Requested mentor ID:", mentorId);
-
-    if (!mentorId) {
-        throw new ApiError(404, "Failed to get data - mentorId not provided");
-    }
+    console.log("Requested mentor ID:", mentorId);
 
     const timeSlots = await Timeslot.find({ mentor: mentorId }).select("-mentor");
-    // console.log("Found time slots:", timeSlots);
+    console.log("Found time slots:", timeSlots);
 
     if (!timeSlots || timeSlots.length === 0) {
         return res.status(200).json({

@@ -8,7 +8,8 @@ import { toast } from "react-hot-toast";
 import { SERVER_URL } from "../../constant";
 import { token } from "../components/constants";
 import axiosInstance from "../axiosConfig/axiosConfig";
-
+import Cookies from "universal-cookie"
+const cookies = new Cookies();
 export default function Topbar() {
 
     const user = useSelector((state) => state.auth.user);
@@ -27,7 +28,7 @@ export default function Topbar() {
         try {
             if (!confirm("Are you Sure ?"))
                 return;
-            await axiosInstance.get("/api/v1/mentor/logout",);
+            await cookies.remove('accessToken')
             navigate('/');
             toast.success("SignOut Success");
            setUser(null);
