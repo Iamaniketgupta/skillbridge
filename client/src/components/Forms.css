@@ -1,0 +1,31 @@
+.form h1{
+    font-size: 30px;
+    color:black;    
+    font-weight:normal; 
+    padding:5px;
+    width:max-content;
+}
+.form{
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+}
+.form hr{
+    border: 2px solid white;
+}
+.form select{
+/* padding:10px; */
+}
+.form .card{
+    background:rgba(255, 255, 255, 0.412);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+.form{
+   background-color: #2779e2;
+   background-image:url('../assets/7482290.jpg');
+   background-repeat:no-repeat;
+   background-size:cover;
+}
+.form #part2{
+    display:none;
+}
