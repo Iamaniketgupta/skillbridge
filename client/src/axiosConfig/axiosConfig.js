@@ -4,7 +4,7 @@ const cookies = new Cookies();
 
 const accessToken = cookies.get('accessToken');
  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: 'http://localhost:8000/',
 });
 
 axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;

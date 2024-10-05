@@ -1,13 +1,16 @@
+// import Meetings from "../../../client/src/components/mentorDashboard/dashboardComponents/Meetings.jsx";
 import { Mentee } from "../models/mentee.model.js";
 import Mentor from "../models/mentor.model.js";
 import Timeslot from "../models/timeslot.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { v4 as uuidv4 } from 'uuid';
+import {Meeting} from "../models/meeting.model.js";
 
 const addTimeslot = asyncHandler(async (req, res) => {
     const { date, month, monthName, time } = req.body;
-    // console.log(req.mentor._id)
+    // console.log(req.mentor._id)z
     if (!(date && time && month && monthName)) {
         throw new ApiError(400, "All fields are required");
     }
@@ -125,6 +128,27 @@ const bookSlot = asyncHandler(async (req, res) => {
 
     mentee.bookedSlots.push(timeslotId);
     await mentee.save();
+
+
+    const roomId = uuidv4();
+    console.log({roomId})
+
+    
+    
+    const newMeeting = new Meeting({
+        roomId,
+        monthName:timeslot.monthName,
+        mentee: userId,
+        mentor: timeslot.mentor,
+        date:timeslot.date,
+        time:timeslot.time,
+        month:timeslot.month,
+    });
+
+    const meet = await newMeeting.save();
+    if(!meet){
+        throw new ApiError(400 , "Error while booking timeslot");
+    }
 
     res.status(200).json({ message: 'Timeslot booked successfully' });
 });  

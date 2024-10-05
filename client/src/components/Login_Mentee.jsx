@@ -23,7 +23,7 @@ export default function Login_Mentee() {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axiosInstance.post(`/mentee/login`, cred);
+            const response = await axiosInstance.post(`/api/v1/mentee/login`, cred);
             console.log("Login Mentee: ",response);
             if(response.data){
               

@@ -58,7 +58,7 @@ function App() {
       const response = await axiosInstance.post("/api/v1/refresh");
 
       // console.log("second")
-      // console.log(response.data)
+      console.log(response.data)
       const obj = {
         user:response.data.data
       }
