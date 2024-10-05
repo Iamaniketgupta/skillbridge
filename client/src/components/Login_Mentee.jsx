@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../constant';
-import axiosInstance from '../axiosConfig/axiosConfig';
 import { setCookie } from './constants';
+import axiosInstance from '../axiosConfig/axiosConfig';
 
 export default function Login_Mentee() {
     const [cred, setCred] = useState({ email: "", password: "" });

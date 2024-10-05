@@ -118,48 +118,36 @@ export const verifyCheckoutSession = asyncHandler(async (req, res) => {
 
 
 const getUserSubscribers = asyncHandler(async (req, res) => {
-    const mentorId = req.mentor._id;
-    // console.log(mentorId);
+    const mentorId = req.mentor?._id || req.body.mentorId;
+
     if (!mentorId) {
-        throw new ApiError(400, "Mentor id is required");
+        return res.status(400).json(new ApiError(400, "Mentor id is required"));
     }
 
-    // console.log(mentorId)
-    const subscription = await Subscription.find({ mentor: mentorId })
-        .populate(
-            {
-                path: "mentee"
-            }
-        );
-
-    if (!subscription) {
-        throw new ApiError(500, "Subscription not found");
-    }
-
-
-    const mentees = subscription.map(sub => {
-        return {
-            _id: sub.mentee._id,
-            fullName: sub.mentee.fullName,
-            avatar: sub.mentee.avatar,
-            state: sub.mentee.state,
-            country: sub.mentee.country,
-            interests: sub.mentee.interests
-        };
+    const subscription = await Subscription.find({
+        mentor: mentorId,
+        status: "success",
+    }).populate({
+        path: "mentee",
     });
-
-    if (!mentees) {
-        throw new ApiError(500, "Some error happend");
+console.log(subscription,"dadadajkhhaudhao")
+    // Check if no subscriptions were found
+    if (!subscription || subscription.length === 0) {
+        return res.status(404).json(new ApiError(404, "No subscriptions found for this mentor"));
     }
+
+    const mentees = subscription.map(sub => ({
+        _id: sub.mentee._id,
+        fullName: sub.mentee.fullName,
+        avatar: sub.mentee.avatar,
+        state: sub.mentee.state,
+        country: sub.mentee.country,
+        interests: sub.mentee.interests,
+    }));
 
     return res.status(200).json(
-        new ApiResponse(
-            200,
-            mentees,
-            "Subscribed mentees fetched successfully"
-        )
-    )
-
+        new ApiResponse(200, mentees, "Subscribed mentees fetched successfully")
+    );
 });
 
 

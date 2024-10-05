@@ -1,22 +1,24 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { SERVER_URL } from "../../../constant";
 import { token } from "../constants";
-import axiosInstance from "../../axiosConfig/axiosConfig";
 import Cookies from "universal-cookie";
+import { login } from "../../store/authSlice";
+import axiosInstance from "../../axiosConfig/axiosConfig";
 
 const MentorDashboard = () => {
+    const dispatch = useDispatch();
     const [topMenuToggle, setTopMenuToggle] = useState(false);
     const [sideBarToggele, setSideBarToggele] = useState(false);
     const user = useSelector((state) => state.auth.user);
     console.error(user);
     const state = user;
-    const fullname = user.fullName;
-    const mentorName = fullname.replace(" ", "-").toLowerCase();
+    const fullname = user?.fullName;
+    const mentorName = fullname?.replace(" ", "-").toLowerCase();
 
     const navigate = useNavigate();
 
@@ -35,6 +37,24 @@ const MentorDashboard = () => {
         }
     }
 
+
+
+    const refreshMentor = async()=>{
+        try {
+          const response = await axiosInstance.post("/refreshMentor");
+          console.log("dadadadad",response)
+          console.log(response.data,"FROM APP.JSX")
+          const obj = {
+            user:response.data
+          }
+          dispatch(login(obj))
+        } catch (error) {
+          console.log(error)
+        }
+      }
+useEffect(() => {   
+    refreshMentor();
+},[])
     return (
 
         <>
@@ -70,7 +90,7 @@ const MentorDashboard = () => {
                                     alt="FlowBite Logo"
                                 />
                                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                                    MentorHub
+                                    Skill Bridge
                                 </span>
                             </a>
                         </div>
@@ -87,8 +107,8 @@ const MentorDashboard = () => {
                                         <span className="sr-only">Open user menu</span>
                                         <img
                                             className="w-8 h-8 rounded-full"
-                                            src={user.avatar}
-                                            alt={user.fullName}
+                                            src={user?.avatar}
+                                            alt={user?.fullName}
                                         />
                                     </button>
                                 </div>
@@ -102,13 +122,13 @@ const MentorDashboard = () => {
                                             className="text-sm text-gray-900 dark:text-white"
                                             role="none"
                                         >
-                                            {user.fullName}
+                                            {user?.fullName}
                                         </p>
                                         <p
                                             className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                                             role="none"
                                         >
-                                            {user.email}
+                                            {user?.email}
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
@@ -146,7 +166,7 @@ const MentorDashboard = () => {
             >
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
                     <ul className="space-y-2 font-medium">
-                        <Link to={`/mentor/dashboard/${mentorName}`}
+                        <Link to={`/mentor/dashboard`}
                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                         >
                             <svg
@@ -320,7 +340,7 @@ const MentorDashboard = () => {
                 </div>
             </aside>
 
-            {location.pathname === `/mentor/dashboard/${mentorName}` &&
+            {location.pathname === `/mentor/dashboard` &&
                 <div className="p-4 sm:ml-64 text-black">
                     <div className="p-4  border-gray-200 border-2 rounded-lg dark:border-gray-700 mt-14">
 
@@ -335,7 +355,7 @@ const MentorDashboard = () => {
 
                                     <div className='p-2 rounded-xl w-32 h-32 bg-black my-3'>
 
-                                        <img src={state?.avatar || "/"} alt={state.fullName} className='w-full h-full' />
+                                        <img src={state?.avatar || "/"} alt={state?.fullName} className='w-full h-full' />
                                     </div>
 
                                 </div>
@@ -344,10 +364,10 @@ const MentorDashboard = () => {
                                     <div>
 
                                         <div className=' text-2xl font-bold'>
-                                            {state.fullName}
+                                            {state?.fullName}
                                         </div>
                                         <div className='font-semit text-xl'>
-                                            {state.profession || "-no profession found"}
+                                            {state?.profession || "-no profession found"}
                                         </div>
 
                                         {/*                                         
@@ -365,12 +385,12 @@ const MentorDashboard = () => {
 
                                     <div>
                                         <div className='p-3 max-w-[250px] border-2'>
-                                            <p>{state.experience || "1"} + years of experience</p>
+                                            <p>{state?.experience || "1"} + years of experience</p>
 
 
                                             <p className='text-xs mt-3 text-blue-500 font-semibold'>Companies Experience </p>
                                             {
-                                                state.workExp?.map((item, idx) =>
+                                                state?.workExp?.map((item, idx) =>
                                                     <p key={idx} className='font-semibold text-lg'>{item} </p>
                                                 )
                                             }
@@ -384,14 +404,14 @@ const MentorDashboard = () => {
                                 {/* Description */}
                                 <div className='p-3'>
                                     <h3>About</h3>
-                                    {state.description || "-no description found"}
+                                    {state?.description || "-no description found"}
                                 </div>
                                 
                                 <div className='pl-3'>
                                     <div className='p-2 border-2 inline-block px-3'>
-                                        <p>{state.state}, {state.country}</p>
+                                        <p>{state?.state}, {state?.country}</p>
                                     </div>
-                                    <a href={state.linkedin || "#"} className='mx-2 w-10 h-10 rounded-full border-2 inline-flex bg-blue-500 items-center justify-center text-white font-bold'>In</a>
+                                    <a href={state?.linkedin || "#"} className='mx-2 w-10 h-10 rounded-full border-2 inline-flex bg-blue-500 items-center justify-center text-white font-bold'>In</a>
 
                                     <div >
                                         <p className='my-3 '>
@@ -400,14 +420,14 @@ const MentorDashboard = () => {
 
                                         {
 
-                                            state.languages?.map((item) =>
+                                            state?.languages?.map((item) =>
                                                 <p key={item} className='p-2  border-2 inline-block'>
                                                     {item}
                                                 </p>
                                             )
 
                                         }
-                                        {state.languages.length === 0 && <p><i>-No Languages found</i></p>}
+                                        {state?.languages.length === 0 && <p><i>-No Languages found</i></p>}
 
                                     </div>
                                 </div>

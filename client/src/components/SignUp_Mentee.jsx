@@ -8,8 +8,8 @@ import {useNavigate} from 'react-router-dom'
 
 
 import { SERVER_URL } from '../../constant';
-import axiosInstance from "../axiosConfig/axiosConfig";
 import { setCookie } from "./constants";
+import axiosInstance from "../axiosConfig/axiosConfig";
 
 export default function SignUp_Mentee() {
 

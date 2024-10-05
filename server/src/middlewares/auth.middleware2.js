@@ -6,10 +6,9 @@ import Mentor from "../models/mentor.model.js";
 
 export const verifyJwt = asyncHandler(async (req, res, next) => {
     try {
-        // console.log(req.cookies.accessToken);
 
-        const token = req.header("Authorization")?.replace("Bearer ", "");
-
+        const token = req.header("Authorization")?.split(" ")[1];
+        // console.log(token)
         if (!token) {
             res.status(402).json({
                 data: null,
@@ -17,12 +16,12 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
             });
         }
         const {_id} = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-console.log(_id)
+// console.log(_id)
         const user = await Mentee.findById(_id).select("-password -refreshToken");
         const user2 = await Mentor.findById(_id).select("-password -refreshToken");
 
-        console.log("MENTOR",user2)
-        console.log("MENTEE",user)
+        // console.log("MENTOR",user2)
+        // console.log("MENTEE",user)
         if (user)
             req.user = user;
         if (user2)

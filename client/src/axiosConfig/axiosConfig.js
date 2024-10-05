@@ -1,10 +1,8 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-const cookies = new Cookies();
+import { getCookie } from '../components/constants';
 
-const accessToken = cookies.get('accessToken');
-if(!accessToken)
-  window.location.href = '/'
+const accessToken = getCookie('accessToken');
+console.log(accessToken)
  const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
 });

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import axiosInstance from "../axiosConfig/axiosConfig";
 import Cookies from 'universal-cookie';
+import axiosInstance from "../axiosConfig/axiosConfig";
 const cookies = new Cookies();
 
 const Paymentsuccess = () => {

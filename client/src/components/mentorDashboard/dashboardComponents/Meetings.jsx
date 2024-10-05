@@ -151,8 +151,7 @@ const Meetings = () => {
         setLoading(true)
         try {
             const response = await axiosInstance.post("/subscription/getUserSubscribers", {
-                mentorId: user._id
-                ,
+                mentorId: user?._id
             },);
             // console.log(response.data.data)
             // console.log(response.data.data);
@@ -233,7 +232,7 @@ const Meetings = () => {
                                 <IoRefreshCircle onClick={fetchMeetings} size={30} title={"Refresh slots"} />
                             </div>
                             <h3 className="text-2xl font-semibold text-center">My 1:1 Meetings</h3>
-                            <div className='flex flex-wrap gap-3 justify-center items-center my-3'>
+                            <div className='flex flex-wrap gap-4 items-center my-3'>
                                 {meetings && meetings?.map(item =>
                                     <div key={item?._id} className='p-2 relative min-w-[260px] border-2 shadow-lg rounded-xl px-4 m-2'>
 

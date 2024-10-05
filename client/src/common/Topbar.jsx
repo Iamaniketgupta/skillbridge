@@ -7,7 +7,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from "react-hot-toast";
 import { SERVER_URL } from "../../constant";
 import { token } from "../components/constants";
-import axiosInstance from "../axiosConfig/axiosConfig";
 import Cookies from "universal-cookie"
 const cookies = new Cookies();
 export default function Topbar() {

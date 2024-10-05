@@ -7,8 +7,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../../constant';
 import { setCookie, token } from '../constants';
 import {useSelector} from 'react-redux'
-import axiosInstance from '../../axiosConfig/axiosConfig';
 import Cookies from 'universal-cookie';
+import axiosInstance from '../../axiosConfig/axiosConfig';
 const cookies = new Cookies();
 
 const MentorProfile = () => {

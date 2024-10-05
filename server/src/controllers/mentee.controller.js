@@ -115,15 +115,13 @@ const login = asyncHandler(async(req,res)=>{
 
     return res
     .status(200)
-    .cookie("accessToken",accessToken )
-    .cookie("refreshToken" , refreshToken )
     .json(
         new ApiResponse(
             200 ,
             {
                 user:loggedInUser,
-                accessToken,
-                refreshToken
+                accessToken:accessToken,
+                refreshToken:refreshToken
             },
             "user logged in successfully"
         )

@@ -194,7 +194,7 @@ const MySlots = () => {
 
 
                 {slotloader ? <div className="text-center relative bottom-11"> Wait..</div> : ''}
-                <div className=" mx-auto w-[70%] flex flex-wrap gap-3 justify-center items-center">
+                <div className=" mx-auto w-[70%] flex flex-wrap gap-4">
                     {
                         !slotsData && "No Slots Found"
                     }

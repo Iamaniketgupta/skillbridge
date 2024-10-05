@@ -22,10 +22,7 @@ const getAllMentors = asyncHandler(async (req, res) => {
 });
 
 const verifyMenteeId = asyncHandler(async (req, res, next) => {
-  const token =
-    req.cookies.accessToken ||
-    req.header("Authorization")?.replace("Bearer", "");
-
+  const token = req.header("Authorization")?.split(" ")[1];
   if (!token) {
     res.status(402).json({
       data: null,
@@ -35,7 +32,7 @@ const verifyMenteeId = asyncHandler(async (req, res, next) => {
 
   const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-  console.log(decodedToken);
+  // console.log(decodedToken);
 
   let user = await Mentee.findById(decodedToken).select(
     "-password -refreshToken"
@@ -50,8 +47,8 @@ const verifyMenteeId = asyncHandler(async (req, res, next) => {
 });
 
 const verifyMentorId = asyncHandler(async (req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer", "");
-
+  const token = req.header("Authorization")?.split(" ")[1];
+// console.log(token)
   if (!token) {
     res.status(402).json({
       data: null,
@@ -59,9 +56,9 @@ const verifyMentorId = asyncHandler(async (req, res, next) => {
     });
   }
 
-  const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  const decodedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-  console.log(decodedToken);
+  // console.log(decodedToken);
 
   let user = await Mentor.findById(decodedToken).select(
     "-password -refreshToken"

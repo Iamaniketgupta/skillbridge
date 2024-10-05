@@ -12,8 +12,8 @@ const RoomPage = () => {
 
     useEffect(() => {
         const myMeeting = async () => {
-            const APP_ID = 1252116654;
-            const SERVER_SECRET = '82bbddcff0bcf536cf5a84e3df34ceca';
+            const APP_ID = 1455837037;
+            const SERVER_SECRET = 'd0c816a85a98b775f53cd72a5ba0accb';
             const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(APP_ID, SERVER_SECRET, roomId, user._id, user.fullName);
             const zc = ZegoUIKitPrebuilt.create(kitToken);
 

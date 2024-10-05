@@ -45,12 +45,12 @@ const MyMentees = () => {
     <div className="w-full min-h-screen bg-white">
       <div className="font-bold text-2xl p-3 text-center">Subscribers :</div>
 
-      <div className="w-full sm:flex flex-wrap gap-2 justify-center">
+      <div className="w-full flex flex-wrap gap-5 p-2">
 
-        {mentees.map((mentee)=>(
-            <div key={mentee._id} className=" m-1  mx-auto sm:mx-2 p-3 w-[300px] border-[1px] border-black rounded-2xl">
+        {mentees?.map((mentee)=>(
+            <div key={mentee._id} className=" m-1   sm:mx-2 p-3 w-[300px] border-[1px] border-black rounded-2xl">
             <div className="flex gap-4">
-              <div className="w-10 h-10 overflow-hidden rounded-full">
+              <div className="min-w-10 min-h-10 max-h-10 max-w-10 overflow-hidden rounded-full">
                 <img
                   className="w-full h-full object-cover rounded-full "
                   src={mentee.avatar}
@@ -58,7 +58,7 @@ const MyMentees = () => {
                 />
               </div>
               <div>
-                  <div className="text-lg font-bold">Suraj</div>
+                  <div className="text-lg font-bold">{mentee?.fullName}</div>
                   <div className="text-sm">
                       {mentee.state} , {mentee.country}
                   </div>
@@ -67,7 +67,7 @@ const MyMentees = () => {
                       <span className="font-semibold text-md">Interests :</span> <br />
                       <div className="flex flex-wrap gap-2">
                         {mentee.interests.map((interest , index)=>(
-                            <div id={index} className="bg-gray-300 p-1 rounded-lg">{interest}</div>
+                            <div key={index}  className="bg-gray-300 p-1 rounded-lg">{interest}</div>
                         ))}
                       </div>
                   </div>

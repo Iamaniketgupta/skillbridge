@@ -9,8 +9,8 @@ import { login } from '../store/authSlice';
 import toast from 'react-hot-toast';
 
 import { SERVER_URL } from '../../constant';
-import axiosInstance from '../axiosConfig/axiosConfig';
 import { setCookie } from './constants';
+import axiosInstance from '../axiosConfig/axiosConfig';
 
 
 export default function Login_Mentor() {
@@ -40,10 +40,10 @@ export default function Login_Mentor() {
             toast.success('Login successful!');
             setLoading(false)
 
-            const fullname= response.data.user.fullName;
-            const mentorName = fullname.replace(" ","-").toLowerCase();
+            // const fullname= response.data.user.fullName;
+            // const mentorName = fullname.replace(" ","-").toLowerCase();
 
-            navigate(`/mentor/dashboard/${mentorName}`);
+            navigate(`/mentor/dashboard`);
 
         } catch (error) {
             console.error('Error:', error);
