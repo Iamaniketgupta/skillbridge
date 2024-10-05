@@ -11,14 +11,14 @@ export default function Taskbox(props) {
   function getTasks(){
     if(props.type=="top"){
       (async ()=>{
-      const response = await axiosInstance.post('/api/v1/task/getAllMenteeTasks',);
+      const response = await axiosInstance.post('/task/getAllMenteeTasks',);
       setTasks(response.data.data.slice(0,3));
       console.log(response.data.data);
       })();
     }
     else{
       (async ()=>{
-        const response = await axiosInstance.post('/api/v1/task/getAllMenteeTasks',);
+        const response = await axiosInstance.post('/task/getAllMenteeTasks',);
         setTasks(response.data.data);
         })();
     }

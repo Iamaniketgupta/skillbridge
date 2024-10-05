@@ -68,7 +68,7 @@ const verifyMentorId = asyncHandler(async (req, res, next) => {
     "-password -refreshToken"
   );
   if (!user) {
-    throw new ApiError(400 , "Expired session")
+    throw new ApiError(400, "Expired session")
   }
 
   req.user = user;
@@ -79,48 +79,38 @@ const verifyMentorId = asyncHandler(async (req, res, next) => {
 
 
 
-const verifyPersonById = asyncHandler(async (req, res, next) => {
-    const token =
-      req.cookies.accessToken || req.header("Authorization")?.replace("Bearer", "") || req.body.id;
-  
-    if (!token) {
-      res.status(402).json({
-        data: null,
-        message: "Please Login as Mentee",
-      });
-    }
-  
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  
-    console.log(decodedToken);
-  
-    let user = await Mentor.findById(decodedToken).select(
-      "-password -refreshToken"
-    );
-    if (!user) {
-        user = await Mentee.findById(decodedToken).select(
-            "-password -refreshToken"
-        );
-        if(!user){
-            throw new ApiError("session expired");
-        }
+export const verifyPersonById = asyncHandler(async( req , res, next)=>{
+  try {
 
-        req.user = user;
-        return res.status(200).json(
-            new ApiResponse(
-                200,
-                user,
-                "user got successfully"
-            )
-        )
-    }
+      const token =  req.header("Authorization")?.replace("Bearer " , "") ;
   
-    req.user = user;
-    return res
-      .status(200)
-      .json(new ApiResponse(200, user, "User got successfully"));
-  });
+      if(!token){
+          res.status(402).json({
+              data:null,
+              message:"Please Login as Mentee"
+          });
+      }
   
+      const decodedToken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET);
+
+      console.log(decodedToken);
+  
+      const  user = await Mentee.findById(decodedToken._id).select("-password -refreshToken");
+
+      console.log(user)
+  
+      if(!user){
+        res.status(401).json({message:'Token Invalid'})
+      }
+  
+     res.status(200).json(user)
+  } catch (error) {
+    res.status(500).json({message:error})
+
+  }
+
+})
 
 
-export { getAllMentors, verifyMenteeId  , verifyMentorId , verifyPersonById};
+
+export { getAllMentors, verifyMenteeId, verifyMentorId };

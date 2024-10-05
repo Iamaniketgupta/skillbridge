@@ -32,7 +32,7 @@ export default function Barside() {
           <i className="bx bx-menu" />
         </div>
         <div className="logo-details">
-          <span className="ml-7 logo_name">Mentor Hub</span>
+          <span className="ml-7 logo_name">Skill Bridge</span>
         </div>
         <ul className="nav-links">
           <li>

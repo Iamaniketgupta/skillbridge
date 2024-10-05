@@ -54,13 +54,10 @@ function App() {
 
   const refresh = async()=>{
     try {
-      // console.log("first")
-      const response = await axiosInstance.post("/api/v1/refresh");
-
-      // console.log("second")
-      // console.log(response.data)
+      const response = await axiosInstance.post("/refresh");
+      console.log(response.data,"FROM APP.JSX")
       const obj = {
-        user:response.data.data
+        user:response.data
       }
       dispatch(login(obj))
     } catch (error) {
@@ -72,15 +69,10 @@ function App() {
 
   
   useEffect(() => {
-    console.log("first")
-    const menteeCookie = document.cookie.includes("accessToken");
-    const mentorCoookie = document.cookie.includes("menauthId");
-    console.log(menteeCookie)
-    console.log(mentorCoookie)
+    const token = document.cookie.includes("accessToken");
+    
     if(!user){
-      if(menteeCookie){
-        refresh()
-      }else if(mentorCoookie){
+      if(token){
         refresh()
       }else{
         setLoading(false)
@@ -88,7 +80,7 @@ function App() {
     }else{
       setLoading(false);
     }
-  }, [user])
+  }, [user]);
 
   if (loading) {
     return <div>Loading...</div>;

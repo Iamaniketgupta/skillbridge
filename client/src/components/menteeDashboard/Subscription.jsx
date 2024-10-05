@@ -9,7 +9,7 @@ export default function Subscription(props) {
   const [subs,setSubs]=useState([]);
   useEffect(()=>{
     (async ()=>{
-      const response = await axiosInstance.get( '/api/v1/subscription/getMenteeSubscriptions',);
+      const response = await axiosInstance.get( '/subscription/getMenteeSubscriptions',);
       setSubs(response.data.data);
        console.log(response.data.data);
     })();
