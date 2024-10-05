@@ -11,7 +11,6 @@ import { Pricing } from "../models/pricing.model.js";
 
 const getCheckoutSession = asyncHandler(async (req, res) => {
     const { mentorId } = req.params;
-    console.log(mentorId)
     // console.log("ceada",req)
     const { _id, email } = req.user;
 
@@ -41,12 +40,12 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
         mode: 'payment',
         success_url: `${process.env.CLIENT_URL}/checkout-success`,
         cancel_url: `${process.env.CLIENT_URL}/checkout-failed/${mentorId}`,
-        customer_email: email, 
+        customer_email: email,
         client_reference_id: mentorId,
         line_items: [{
             price_data: {
                 currency: 'inr',
-                unit_amount: pricing.mentorshipPrice * 100, 
+                unit_amount: pricing.mentorshipPrice * 100,
                 product_data: {
                     name: mentor.fullName,
                     images: [mentor.avatar || 'default-image-url.jpg'],
@@ -56,21 +55,18 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
         }]
     });
 
-    if(!session){
-        return res.status(500).json({message:'Something went wrong'})
+
+    if (!session) {
+        return res.status(500).json({ message: 'Something went wrong' })
     }
-    // Save the subscription details only after payment is successful
     const subscription = new Subscription({
         mentor: mentorId,
         mentee: _id,
         price: pricing.mentorshipPrice,
         session: session.id,
-        status: "pending" 
+        status: "pending"
     });
-
     await subscription.save();
-
-    // Return the session information to the client
     res.status(201).json({
         success: true,
         message: 'Successfully initiated checkout',
@@ -79,25 +75,65 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
 });
 
 
+export const verifyCheckoutSession = asyncHandler(async (req, res) => {
+    const { sessionId } = req.body;
+    console.log('hereweaea', sessionId)
+
+    if (!sessionId) {
+        return res.status(400).json({ success: false, message: 'Session ID is required' });
+    }
+
+    try {
+        const stripe = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2022-11-15' });
+
+        // Retrieve the session from Stripe
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (!session) {
+            return res.status(400).json({ success: false, message: 'Session not found' });
+        }
+
+        // Update the subscription status in the database
+        const subscription = await Subscription.findOne({ session: sessionId });
+        console.log('SUBS', subscription)
+
+        subscription.status = "success";
+        await subscription.save();
+
+        if (!subscription) {
+            return res.status(404).json({ success: false, message: 'Subscription not found' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Payment successful and status updated' });
 
 
-const getUserSubscribers = asyncHandler(async(req,res)=>{
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+
+
+
+
+const getUserSubscribers = asyncHandler(async (req, res) => {
     const mentorId = req.mentor._id;
     // console.log(mentorId);
-    if(!mentorId){
-        throw new ApiError(400 , "Mentor id is required");
+    if (!mentorId) {
+        throw new ApiError(400, "Mentor id is required");
     }
 
     // console.log(mentorId)
     const subscription = await Subscription.find({ mentor: mentorId })
-    .populate(
-        {
-            path:"mentee"
-        }
-    );
+        .populate(
+            {
+                path: "mentee"
+            }
+        );
 
-    if(!subscription){
-        throw new ApiError(500 , "Subscription not found");
+    if (!subscription) {
+        throw new ApiError(500, "Subscription not found");
     }
 
 
@@ -106,14 +142,14 @@ const getUserSubscribers = asyncHandler(async(req,res)=>{
             _id: sub.mentee._id,
             fullName: sub.mentee.fullName,
             avatar: sub.mentee.avatar,
-            state:sub.mentee.state,
-            country:sub.mentee.country,
-            interests:sub.mentee.interests
+            state: sub.mentee.state,
+            country: sub.mentee.country,
+            interests: sub.mentee.interests
         };
-    }); 
+    });
 
-    if(!mentees){
-        throw new ApiError(500 , "Some error happend");
+    if (!mentees) {
+        throw new ApiError(500, "Some error happend");
     }
 
     return res.status(200).json(
@@ -127,38 +163,38 @@ const getUserSubscribers = asyncHandler(async(req,res)=>{
 });
 
 
-const getMenteeSubscriptions = asyncHandler(async(req,res)=>{
-    
+const getMenteeSubscriptions = asyncHandler(async (req, res) => {
+
     const menteeId = req.user._id;
-   
-    if(!menteeId)
-    throw new ApiError(401 , "Please Login");
+
+    if (!menteeId)
+        throw new ApiError(401, "Please Login");
 
     const mentee = await Mentee.findById(menteeId);
-    if(!mentee){
-        throw new ApiError(400 , "user not found");
+    if (!mentee) {
+        throw new ApiError(400, "user not found");
     }
-    
+
     const subscriptions = await Subscription.find(
         {
-            mentee:menteeId
+            mentee: menteeId
         }
     ).populate(
         {
-            path:"mentor",
-            select:"avatar fullName"
+            path: "mentor",
+            select: "avatar fullName"
         }
     );
-    if(!subscriptions){
-        throw new ApiError(500 , " Error while getting Subscriptions");
+    if (!subscriptions) {
+        throw new ApiError(500, " Error while getting Subscriptions");
     }
-    
+
     return res.status(200).json(
         new ApiResponse(
             200,
             subscriptions,
             "Mentor subscriptions fetched successfully"
-))
+        ))
 })
 
 

@@ -5,9 +5,12 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../../constant';
-import { token } from '../constants';
+import { setCookie, token } from '../constants';
 import {useSelector} from 'react-redux'
 import axiosInstance from '../../axiosConfig/axiosConfig';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+
 const MentorProfile = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -78,14 +81,11 @@ const MentorProfile = () => {
 
 
  const your_stripe_public_key ="pk_test_51P1gnJSJzjqVqPS4GUjR3KrNnajTe3KyhC2LVeimTlxth7DFiL5TznffkNHYtbxfvocGYacl1Qbh3G5w9ZvmklUW00fwzf1dXj";
- const stripePromise = loadStripe('your_stripe_public_key');
- const buyMentorship = async (mentorId) => {
+ const stripePromise = loadStripe(your_stripe_public_key);
+ const buyMentorship = async () => {
     try {
-        // Retrieve the Stripe object from the Stripe promise
-        console.log(state._id);
         const stripe = await stripePromise;
         
-        // Make a request to your backend to create a checkout session
         const res = await axiosInstance.post(`/payment/checkout-session/${state._id}`, {
             
             _id:user._id,
@@ -93,11 +93,15 @@ const MentorProfile = () => {
             email:user.email
         },);
 
+    
         // Check if the response contains the session URL
         if (!res || !res.data.session.url) {
             throw new Error("Payment Failed");
         }
 
+        console.log(res.data.session.id)
+        cookies.remove('sessionId');
+        setCookie('sessionId', res.data.session.id);
         // Redirect the user to the checkout page
         window.location.href = res.data.session.url;
     } catch (error) {
