@@ -7,7 +7,7 @@ import Mentor from "../models/mentor.model.js";
 import { isValidObjectId } from "mongoose";
 import Timeslot from "../models/timeslot.model.js";
 import { Pricing } from "../models/pricing.model.js";
-
+import jwt from "jsonwebtoken";
 
 const options = {
     httpOnly: true,
@@ -57,7 +57,7 @@ const loginMentor = asyncHandler(async (req, res) => {
     });
 
     if (!ValidUser) 
-    res.status(404).json({
+   return res.status(404).json({
         data:{},
         message: "User Not Found"
     });
@@ -65,36 +65,27 @@ const loginMentor = asyncHandler(async (req, res) => {
     if (!password) throw new ApiError(400, "Password is required");
 
     if (!await ValidUser.isPasswordCorrect(password)) {
-        res.status(401).json({
+        return res.status(401).json({
             data:{},
             message: "Invalid email or password"
         });
     }
 
-    const accessToken = await ValidUser.generateAccessToken();
-    console.log(accessToken)
+    const accessToken = await jwt.sign({ _id: ValidUser._id,email:ValidUser.email,role:"mentor" }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1d"
+    });
+    console.log('dadada',accessToken)
     // Update user document with refresh token
-    const refreshToken = await ValidUser.generateRefreshToken();
-    const rtoken = await Mentor.findByIdAndUpdate(ValidUser._id, { refreshToken: refreshToken });
-    if (!rtoken)
-        throw new ApiError(500, "something went wrong");
+    // const refreshToken = await ValidUser.generateRefreshToken();
+    // const rtoken = await Mentor.findByIdAndUpdate(ValidUser._id, { refreshToken: refreshToken });
+    // if (!rtoken)
+    //     throw new ApiError(500, "something went wrong");
 
         
 
-        const loggedInUser = await Mentor.findById(ValidUser._id).select("-password -refreshToken");
+// const loggedInUser = await Mentor.findById(ValidUser._id).select("-password -refreshToken");
 
-    return res.status(200).cookie("accessToken", accessToken)
-        .cookie("refreshToken", rtoken.refreshToken).json(
-            new ApiResponse(
-                200 ,
-                {
-                    user:loggedInUser,
-                    accessToken,
-                    refreshToken
-                },
-                "user logged in successfully"
-            )
-        );
+     res.status(200).json({message:'Login success',accessToken:accessToken,user:ValidUser});
 
 });
 

@@ -31,16 +31,16 @@ export default function Login_Mentor() {
             const response = await axiosInstance.post('/mentor/login', cred);
             console.log("Login Mentor: ",response);
             
-            setCookie("accessToken", response.data.data.accessToken);
+            setCookie("accessToken", response.data.accessToken);
             const obj = {
-                user: response.data.data.user
+                user: response.data.user
             }
             dispatch(login(obj));
             // console.log(obj);
             toast.success('Login successful!');
             setLoading(false)
 
-            const fullname= response.data.data.user.fullName;
+            const fullname= response.data.user.fullName;
             const mentorName = fullname.replace(" ","-").toLowerCase();
 
             navigate(`/mentor/dashboard/${mentorName}`);

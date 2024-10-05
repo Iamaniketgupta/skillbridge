@@ -8,7 +8,6 @@ const Paymentsuccess = () => {
   const [status, setStatus] = useState('loading'); 
   
   const sessionId = cookies.get('sessionId');
-console.log(sessionId)
   useEffect(() => {
     if (sessionId) {
       axiosInstance.post('/payment/verify', { sessionId })

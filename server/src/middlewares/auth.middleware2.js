@@ -16,10 +16,10 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
                 message: "Please Login as Mentee"
             });
         }
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-        const user = await Mentee.findById(decodedToken).select("-password -refreshToken");
-        const user2 = await Mentor.findById(decodedToken).select("-password -refreshToken");
+        const {_id} = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+console.log(_id)
+        const user = await Mentee.findById(_id).select("-password -refreshToken");
+        const user2 = await Mentor.findById(_id).select("-password -refreshToken");
 
         console.log("MENTOR",user2)
         console.log("MENTEE",user)
