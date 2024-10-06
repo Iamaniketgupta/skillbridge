@@ -2,31 +2,32 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import axiosInstance from "../axiosConfig/axiosConfig";
+import { getCookie } from "../components/constants";
 const cookies = new Cookies();
 
 const Paymentsuccess = () => {
   const [status, setStatus] = useState('loading'); 
   
-  const sessionId = cookies.get('sessionId');
+  const sessionId = getCookie('sessionId');
+  const verifyPayment = async () => {
+    await axiosInstance.post('/payment/verify', { sessionId })
+    .then(response => {
+      if (response.data.success) {
+        setStatus('success');
+        console.log('Payment verified and status updated!');
+      } else {
+        setStatus('fail');
+        console.log('Payment verification failed!');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      setStatus('fail');
+    });
+  }
   useEffect(() => {
-    if (sessionId) {
-      axiosInstance.post('/payment/verify', { sessionId })
-        .then(response => {
-          if (response.data.success) {
-            setStatus('success');
-            cookies.remove('sessionId');
-            console.log('Payment verified and status updated!');
-          } else {
-            setStatus('fail');
-            console.log('Payment verification failed!');
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          setStatus('fail');
-          cookies.remove('sessionId');
-        });
-    } 
+    verifyPayment();
+    console.log(sessionId);
   }, [sessionId]);
 
   return (
@@ -45,9 +46,9 @@ const Paymentsuccess = () => {
         </div>
       )}
       
-      <Link to="/mentee/dashboard" className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      {status !== 'loading' && <Link to="/mentee/dashboard" className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Continue
-      </Link>
+      </Link>}
     </div>
   );
 };

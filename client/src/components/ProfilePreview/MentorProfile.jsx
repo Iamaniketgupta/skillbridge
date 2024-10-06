@@ -5,7 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SERVER_URL } from '../../../constant';
-import { setCookie, token } from '../constants';
+import { getCookie, removeCookie, setCookie, token } from '../constants';
 import {useSelector} from 'react-redux'
 import Cookies from 'universal-cookie';
 import axiosInstance from '../../axiosConfig/axiosConfig';
@@ -84,9 +84,11 @@ const MentorProfile = () => {
  const stripePromise = loadStripe(your_stripe_public_key);
  const buyMentorship = async () => {
     try {
+        removeCookie('sessionId');
+
         const stripe = await stripePromise;
         
-        const res = await axiosInstance.post(`/payment/checkout-session/${state._id}`, {
+        const res = await axiosInstance.post(`/payment/checkout-session/${state?._id}`, {
             
             _id:user._id,
             mentorId:state._id,
@@ -99,11 +101,14 @@ const MentorProfile = () => {
             throw new Error("Payment Failed");
         }
 
-        console.log(res.data.session.id)
-        cookies.remove('sessionId');
+        // console.log(res.data.session.id)
+        // console.log(res.data.session.url)
         setCookie('sessionId', res.data.session.id);
+        if(getCookie('sessionId')) {
+            
+            window.location.href = res.data.session.url;
+        }
         // Redirect the user to the checkout page
-        window.location.href = res.data.session.url;
     } catch (error) {
         toast.error("Some Error Occurred: " + error.message);
         console.log(error);
@@ -122,7 +127,7 @@ const MentorProfile = () => {
 
                         <div className='p-2 rounded-xl w-32 h-32 bg-black my-3'>
 
-                            <img src={state?.avatar || "/"} alt={state.fullName} className='w-full h-full' />
+                            <img src={state?.avatar || "/"} alt={state?.fullName} className='w-full h-full' />
                         </div>
 
                     </div>
@@ -131,10 +136,10 @@ const MentorProfile = () => {
                         <div>
 
                             <div className=' text-2xl font-bold'>
-                                {state.fullName}
+                                {state?.fullName}
                             </div>
                             <div className='font-semit text-xl'>
-                                {state.profession || "-no profession found"}
+                                {state?.profession || "-no profession found"}
                             </div>
 
                             {/* 
@@ -148,12 +153,12 @@ const MentorProfile = () => {
 
                         <div>
                             <div className='p-3 max-w-[250px] border-2'>
-                                <p>{state.experience || "1"} + years of experience</p>
+                                <p>{state?.experience || "1"} + years of experience</p>
 
 
                                 <p className='text-xs mt-3 text-blue-500 font-semibold'>Companies Experience </p>
                                 {
-                                    state.workExp?.map((item, idx) =>
+                                    state?.workExp?.map((item, idx) =>
                                         <p key={idx} className='font-semibold text-lg'>{item} </p>
                                     )
                                 }
@@ -167,18 +172,18 @@ const MentorProfile = () => {
                     {/* Description */}
                     <div className='p-3'>
                         <h3>About</h3>
-                        {state.description || "-no description found"}
+                        {state?.description || "-no description found"}
                     </div>
 
                     <div className='mx-3 my-2 bg-yellow-200 border-2 border-yellow-400 rounded-lg px-2 py-1 inline-block'>
-                        <span>{state.rating + " Stars"}</span>
+                        <span>{state?.rating + " Stars"}</span>
                     </div>
 
                     <div className='pl-3'>
                         <div className='p-2 border-2 inline-block px-3'>
-                            <p>{state.state}, {state.country}</p>
+                            <p>{state?.state}, {state.country}</p>
                         </div>
-                        <a href={state.linkedin || "#"} className='mx-2 w-10 h-10 rounded-full border-2 inline-flex bg-blue-500 items-center justify-center text-white font-bold'>In</a>
+                        <a href={state?.linkedin || "#"} className='mx-2 w-10 h-10 rounded-full border-2 inline-flex bg-blue-500 items-center justify-center text-white font-bold'>In</a>
 
                         <div >
                             <p className='my-3 '>
@@ -194,7 +199,7 @@ const MentorProfile = () => {
                                 )
 
                             }
-                            {state.languages.length === 0 && <p><i>-No Languages found</i></p>}
+                            {state?.languages?.length === 0 && <p><i>-No Languages found</i></p>}
 
                         </div>
                     </div>
