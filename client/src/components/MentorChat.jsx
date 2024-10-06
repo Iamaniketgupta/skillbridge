@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import ChatMessage from './ChatMessage'
 import ChatList from './ChatList'
 import {useSelector} from 'react-redux'
-import io from 'socket.io-client';
 import ChatListForMentor from './ChatListForMentor';
 import { useParams } from "react-router-dom";
 import { MdMessage } from "react-icons/md";

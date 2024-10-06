@@ -1,7 +1,28 @@
-import { Link, NavLink } from 'react-router-dom';
-import './Barside.css';
-import { useEffect } from 'react';
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import "./Barside.css";
+import { IoLogOutOutline } from "react-icons/io5";
+import { useEffect } from "react";
+import { removeCookie } from "../components/constants";
+import toast from "react-hot-toast";
+import { logout } from "../store/authSlice";
 export default function Barside() {
+  const navigate = useNavigate();
+
+  const handleLogout=async()=>{
+  
+    
+    try {
+      if (!confirm("Are you Sure ?"))
+          return;
+        await removeCookie('accessToken')
+        logout();
+      navigate('/');
+      toast.success("SignOut Success");
+  } catch (error) {
+      toast.error("Failed to Signout");
+  }
+    
+  }
   function giveAction() {
     let sidebar = document.querySelector(".sidebar");
     let menu = document.querySelector(".logo-details");
@@ -9,7 +30,7 @@ export default function Barside() {
     sidebarBtn.addEventListener("click", (event) => {
       sidebar.classList.toggle("close");
     });
-    window.addEventListener('click', function (e) {
+    window.addEventListener("click", function (e) {
       if (menu.contains(e.target)) {
         sidebar.classList.toggle("close");
         // Clicked in box
@@ -18,15 +39,13 @@ export default function Barside() {
         // Clicked outside the box
       }
     });
-
   }
   useEffect(() => {
-    window.addEventListener('load', giveAction);
+    window.addEventListener("load", giveAction);
     giveAction();
   }, []);
   return (
     <>
-
       <div className="sidebar close cursor-pointer" onClick={giveAction}>
         <div className="logo-details">
           <i className="bx bx-menu" />
@@ -37,7 +56,10 @@ export default function Barside() {
         <ul className="nav-links">
           <li>
             <Link to="/mentee/dashboard/">
-              <i className="bx bx-grid-alt" />
+              <i
+                className="bx bx-grid-alt  "
+                style={{ height: "50px", width: "50px" }}
+              />
               <span className="link_name">Dashboard</span>
             </Link>
             <ul className="sub-menu blank">
@@ -50,8 +72,11 @@ export default function Barside() {
           </li>
 
           <li>
-            <Link to="/mentee/dashboard/allMentors"
-              className=' text-center my-2 flex mx-auto items-center '>
+            <Link
+              to="/mentee/dashboard/allMentors"
+              className=" text-center my-2  flex mx-auto items-center "
+              style={{ height: "38px" }}
+            >
               <svg
                 className="flex-shrink-0 ml-7 w-5 h-5 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 aria-hidden="true"
@@ -61,20 +86,25 @@ export default function Barside() {
               >
                 <path d="M14 2a3.963 3.963 0 0 1.4.267 6.39 6.439 0 0 1-1.331 6.638A4 4 0 1 0 1 2Zm1 9h-.2646.957 6.957 0 0 1 15 1a7 2.7 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
               </svg>
-              <p className='ml-7  link_name'>Buy Mentorship</p>
+              <p className="ml-7  link_name">Buy Mentorship</p>
             </Link>
 
-            <ul className="sub-menu blank">
+            <ul className="sub-menu blank ">
               <li>
-                <Link className="link_name" to="/mentee/dashboard/allMentors">
-                 Buy Mentorship
+                <Link
+                  className="link_name text-center my-2 flex mx-auto items-center  "
+                  to="/mentee/dashboard/allMentors"
+                >
+                  Buy Mentorship
                 </Link>
               </li>
             </ul>
           </li>
           <li>
-            <Link to="/mentee/dashboard/meetings"
-              className=' text-center my-2 flex mx-auto items-center '>
+            <Link
+              to="/mentee/dashboard/meetings"
+              className=" text-center my-3 flex mx-auto items-center "
+            >
               <svg
                 className="flex-shrink-0 ml-7 w-5 h-5 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 aria-hidden="true"
@@ -84,12 +114,12 @@ export default function Barside() {
               >
                 <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
               </svg>
-              <p className='ml-7  link_name'>Meetings</p>
+              <p className="ml-7  link_name">Meetings</p>
             </Link>
 
             <ul className="sub-menu blank">
               <li>
-                <Link className="link_name" to="/mentee/dashboard/meetings">
+                <Link className="link_name " to="/mentee/dashboard/meetings">
                   Meetings
                 </Link>
               </li>
@@ -160,6 +190,24 @@ export default function Barside() {
               </li>
             </ul>
           </li>
+
+          <li onClick={handleLogout}>
+            <Link to="#"  > 
+              <i className="ml-7 mt-3" >
+              
+              <IoLogOutOutline size={20} /> {/* Set icon size as needed */}
+              </i>
+              <span className="link_name mt-[-10px] ml-[-32px] ">Logout</span>
+            </Link>
+            <ul className="">
+              <li>
+                
+              </li>
+            </ul>
+          </li>
+          
+
+
           <li>
             <div className="profile-details">
               <div className="profile-content">
@@ -173,9 +221,7 @@ export default function Barside() {
             </div>
           </li>
         </ul>
-      </div >
+      </div>
     </>
-
-
   );
 }
