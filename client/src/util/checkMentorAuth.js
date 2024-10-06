@@ -8,7 +8,7 @@ export const checkAuth = () => async (dispatch) => {
 
   if (token) {
     try {
-      const response = await axiosInstance.post('/api/v1/auth/validateMentor', null, {
+      const response = await axiosInstance.post('/auth/validateMentor', null, {
         
       });
 
