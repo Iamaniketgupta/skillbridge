@@ -55,7 +55,7 @@ export default function Signup_Mentor() {
             // console.log(response.data);
             toast.success('Sign up successful!');
             setLoading(false);
-            navigate("/login_mentor")
+            navigate("/mentor/dashboard")
         } catch (error) {
             console.error('Error:', error);
             toast.error('Error signing up. Please try again.');

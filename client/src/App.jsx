@@ -41,6 +41,7 @@ import {useNavigate} from 'react-router-dom'
 import MenteeMeetings from './components/menteeDashboard/DashboardComponents/MenteeMeetings';
 import { SERVER_URL } from '../constant';
 import axiosInstance from './axiosConfig/axiosConfig';
+import { getCookie } from './components/constants';
 
 
 function App() {
@@ -84,22 +85,22 @@ function App() {
 
   
   useEffect(() => {
-    const token = document.cookie.includes("accessToken");
-    
+    const token = getCookie('accessToken');
     if(!user){
       if(token){
         refresh()
+        refreshMentor()
       }else{
         setLoading(false)
       }
     }else{
       setLoading(false);
     }
-  }, [user]);
+  }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   
   return (
     <>
@@ -113,22 +114,22 @@ function App() {
         <Route path="mentee/dashboard/" element={<><MenteeDashboard /><MenteeHome /></>} />
         <Route path="mentee/dashboard/tasks" element={<><MenteeDashboard /><MenteeAllTasks /></>} />
         <Route path="/mentor/chat/:recipientId" element={<MentorChat />} />
-        <Route path="mentee/dashboard/settings" element={<><MenteeDashboard /><EditMenteeProfile /></>} />
+        <Route path="/mentee/dashboard/settings" element={<><MenteeDashboard /><EditMenteeProfile /></>} />
         <Route path="mentee/dashboard/subscription" element={<><MenteeDashboard /><Subscription /></>} />
         <Route path="mentee/dashboard/meetings" element={<><MenteeDashboard /><MenteeMeetings /></>} />
         <Route path="mentee/dashboard/allMentors" element={<><MenteeDashboard /><AllMentorsPage /></>} />
 
 
         {/* Mentor Routes */}
-        <Route path="/mentor/dashboard/:mentorName" element={<MentorDashboard />} />
+        <Route path="/mentor/dashboard" element={<MentorDashboard />} />
         <Route path="/profile/:nameId" element={<MentorProfile />} />
         <Route path="/allMentors" element={<AllMentorsPage />} />
 
 
         {/* <Route path="mentor/dashboard/home" element={<> <MentorDashboard /><Home /></>} /> */}
-        <Route path="mentor/dashboard/pricing" element={<> <MentorDashboard /><Pricing /></>} />
-        <Route path="mentor/dashboard/subscribers" element={<> <MentorDashboard /><MyMentees /></>} />
-        <Route path="mentor/dashboard/meetings" element={<> <MentorDashboard /><Meetings /></>} />
+        <Route path="/mentor/dashboard/pricing" element={<> <MentorDashboard /><Pricing /></>} />
+        <Route path="/mentor/dashboard/subscribers" element={<> <MentorDashboard /><MyMentees /></>} />
+        <Route path="/mentor/dashboard/meetings" element={<> <MentorDashboard /><Meetings /></>} />
         <Route path="/mentor/dashboard/trailslots" element={<> <MentorDashboard /><MySlots /></>} />
         <Route path="/mentor/dashboard/tasks" element={<> <MentorDashboard /><AssignTask/></>} />
         <Route path="/mentor/dashboard/alltasks" element={<> <MentorDashboard /><MentorAllTasks/></>} />
