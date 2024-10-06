@@ -42,7 +42,7 @@ const AllMentorsPage = () => {
                     Our Mentors
                 </h1>
 
-                <div className='m-2 p-2 flex gap-3 flex-wrap justify-center items-center'>
+                <div className='mx-20 p-2 grid grid-cols-4 gap-3 flex-wrap justify-center items-center'>
                     {
                         loading ? <Spinner /> :
                             allMentors?.map((item) => 
