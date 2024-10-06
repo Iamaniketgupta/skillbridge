@@ -9,7 +9,7 @@ export default function SubCard(props) {
       <p className="card-title text-md">Mentor: {props?.mentor}</p>
       <h3 className="card-text">Price: {props.price}</h3>
       <p className="text-weight-bold">
-      Status: <span className="badge bg-primary">{props.status.toString().toUpperCase()}</span>
+      Status: <span className="badge bg-primary">{props.status?.toString().toUpperCase()}</span>
       </p>
 </div>
 </div>
