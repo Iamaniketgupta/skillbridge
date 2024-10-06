@@ -81,7 +81,7 @@ function MentorCard(props) {
         <img
 
           src={props.item.avatar}
-          className="mb-3 w-40 h-40 rounded-full shadow-lg overflow-clip"
+          className="mb-3 w-40 h-40 rounded-full shadow-lg object-cover overflow-clip"
         />
         <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{props?.item?.fullName || "-No Name"}</h5>
         <span className="text-sm my-1 text-gray-500 dark:text-gray-400">{props?.item?.profession || "- Profession Not Found"}</span>
