@@ -77,8 +77,8 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
 
 export const verifyCheckoutSession = asyncHandler(async (req, res) => {
     const { sessionId } = req.body;
-    const {_id}= req.user
-    console.log('hereweaea', sessionId)
+    const _id= req.user._id
+    console.log('hereweaea', _id)
 
     // if (!sessionId) {
     //     return res.status(400).json({ success: false, message: 'Session ID is required' });
@@ -104,7 +104,7 @@ export const verifyCheckoutSession = asyncHandler(async (req, res) => {
             return res.status(404).json({ success: false, message: 'Subscription not found' });
         }
 
-        return res.status(200).json({ success: true, message: 'Payment successful and status updated' });
+         res.status(200).json({ success: true, message: 'Payment successful and status updated' });
 
 
     } catch (err) {
