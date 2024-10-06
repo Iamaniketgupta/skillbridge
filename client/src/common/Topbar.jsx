@@ -12,6 +12,7 @@ const cookies = new Cookies();
 export default function Topbar() {
 
     const user = useSelector((state) => state.auth.user);
+    const status = useSelector((state) => state.auth.status);
    
     const state = user;
     const fullname = user?.fullName;

@@ -6,7 +6,7 @@ import { getCheckoutSession, verifyCheckoutSession } from '../controllers/subscr
 
 
 router.route("/checkout-session/:mentorId").post(verifyJwt,getCheckoutSession);
-router.route("/verify").post(verifyJwt,verifyCheckoutSession);
+router.route("/getMenteeSubscriptions").post(verifyJwt,verifyCheckoutSession);
 
 
 

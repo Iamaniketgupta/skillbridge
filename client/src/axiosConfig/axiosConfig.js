@@ -2,12 +2,11 @@ import axios from 'axios';
 import { getCookie } from '../components/constants';
 
 const accessToken = getCookie('accessToken');
-console.log(accessToken)
- const axiosInstance = axios.create({
+const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/api/v1',
 });
 
 axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
 
-export default axiosInstance;
+export default axiosInstance;
