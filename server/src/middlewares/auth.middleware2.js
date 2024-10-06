@@ -8,7 +8,7 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
     try {
 
         const token = req.header("Authorization")?.split(" ")[1];
-        // console.log(token)
+        console.log(token)
         if (!token) {
             res.status(402).json({
                 data: null,

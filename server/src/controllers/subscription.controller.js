@@ -77,26 +77,26 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
 
 export const verifyCheckoutSession = asyncHandler(async (req, res) => {
     const { sessionId } = req.body;
+    const {_id}= req.user
     console.log('hereweaea', sessionId)
 
-    if (!sessionId) {
-        return res.status(400).json({ success: false, message: 'Session ID is required' });
-    }
+    // if (!sessionId) {
+    //     return res.status(400).json({ success: false, message: 'Session ID is required' });
+    // }
 
     try {
-        const stripe = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2022-11-15' });
+        // const stripe = new Stripe(process.env.STRIPE_SECRET, { apiVersion: '2022-11-15' });
 
-        // Retrieve the session from Stripe
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        // // Retrieve the session from Stripe
+        // const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-        if (!session) {
-            return res.status(400).json({ success: false, message: 'Session not found' });
-        }
+        // if (!session) {
+        //     return res.status(400).json({ success: false, message: 'Session not found' });
+        // }
 
         // Update the subscription status in the database
-        const subscription = await Subscription.findOne({ session: sessionId });
-        console.log('SUBS', subscription)
-
+        const subscription = await Subscription.findOne({ mentee: _id });
+        
         subscription.status = "success";
         await subscription.save();
 
@@ -130,7 +130,6 @@ const getUserSubscribers = asyncHandler(async (req, res) => {
     }).populate({
         path: "mentee",
     });
-console.log(subscription,"dadadajkhhaudhao")
     // Check if no subscriptions were found
     if (!subscription || subscription.length === 0) {
         return res.status(404).json(new ApiError(404, "No subscriptions found for this mentor"));
