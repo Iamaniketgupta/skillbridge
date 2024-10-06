@@ -252,6 +252,7 @@ const deleteTask = asyncHandler(async(req,res)=>{
 
 const getAllTasks = asyncHandler(async(req,res)=>{
     const mentorId = req.mentor._id;
+    // console.log(req.mentor,"dadad")
 
     const tasks = await Task.find(
         {

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { SERVER_URL } from "../../../constant";
-import { token } from "../constants";
+import { removeCookie, token } from "../constants";
 import Cookies from "universal-cookie";
 import { login } from "../../store/authSlice";
 import axiosInstance from "../../axiosConfig/axiosConfig";
@@ -30,10 +30,10 @@ const MentorDashboard = () => {
             navigate('/');
             toast.success("SignOut Success");
             
-            Cookies.remove('accessToken');
+            removeCookie('accessToken');
 
         } catch (error) {
-            toast.error("Failed to Signout");
+            // toast.error("Failed to Signout");
         }
     }
 

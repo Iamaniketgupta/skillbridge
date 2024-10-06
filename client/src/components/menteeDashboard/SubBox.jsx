@@ -30,7 +30,7 @@ export default function SubBox(props) {
   return (
     <>
       <br />
-      <div className="row justify-content-around">
+      <div className="row w-full px-3">
         {subs.length === 0 && (
           <div className='w-full h-full flex justify-center items-center font-bold text-2xl text-gray-300'>
             No subscription found
