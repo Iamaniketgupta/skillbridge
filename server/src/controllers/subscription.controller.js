@@ -56,7 +56,7 @@ const getCheckoutSession = asyncHandler(async (req, res) => {
     });
 
 
-    if (!session) {
+    if (!session ) {
         return res.status(500).json({ message: 'Something went wrong' })
     }
     const subscription = new Subscription({
@@ -165,7 +165,8 @@ const getMenteeSubscriptions = asyncHandler(async (req, res) => {
 
     const subscriptions = await Subscription.find(
         {
-            mentee: menteeId
+            mentee: menteeId,
+            status: "success",
         }
     ).populate(
         {

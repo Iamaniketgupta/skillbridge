@@ -41,7 +41,7 @@ export default function Topbar() {
 <Navbar fluid rounded className="fixed w-full top-0 left-0 z-10">
       <Navbar.Brand href="/">
         <img src="https://flowbite-react.com/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-        <span className="self-center whitespace-nowrap text-2xl font-bold dark:text-white">Mentor Hub</span>
+        <span className="self-center whitespace-nowrap text-2xl font-bold dark:text-white">Skill Bridge</span>
       </Navbar.Brand>
       <div className="flex md:order-2">
       { User &&  <Dropdown

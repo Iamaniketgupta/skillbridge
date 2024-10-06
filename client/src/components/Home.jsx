@@ -37,7 +37,7 @@ function addAnimation() {
 <Topbar/>
 <div className="home pt-5">
 <div className="intro pt-5">
-<h1 className='text-center mt-5'>Mentor Hub</h1>    
+<h1 className='text-center mt-5'>Skill Bridge</h1>    
 <h2 className='text-center mt-2'>Make your path easier with a Mentor</h2>
 <p className='text-center mt-2'>Land your dream job, role, and company faster than ever with 1:1 long term mentorship.</p>
 <div className="box text-center mt-5">
